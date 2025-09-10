@@ -1,6 +1,13 @@
+import os
 import unittest
+from flask import Flask, render_template
 from main import app
-from flask import render_template
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return 'Hello, World!'
 
 class TestSite(unittest.TestCase):
 
@@ -15,6 +22,8 @@ class TestSite(unittest.TestCase):
     def test_border_page(self):
         response = self.app.get('/border')
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Border Collie', response.data) 
+        self.assertIn(b'Border Collie', response.data)
 
-
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
